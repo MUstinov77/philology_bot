@@ -32,7 +32,7 @@ async def on_startup(bot: Bot) -> None:
     await bot.set_webhook(url=WEBHOOK_URL)
 
 
-async def on_shutdown(dp):
+async def on_shutdown():
     await bot.delete_webhook()
 
 

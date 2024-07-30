@@ -31,3 +31,7 @@ KEYBOARD_ANSWERS = ReplyKeyboardBuilder(
         [KEY_ANSWER_3, KEY_ANSWER_4],
     ]
 )
+
+KEYBOARD_START = KEYBOARD_START.as_markup(resize_keyboard=True)
+KEYBOARD_CHOOSING_TEST = KEYBOARD_CHOOSING_TEST.as_markup(resize_keyboard=True)
+KEYBOARD_ANSWERS = KEYBOARD_ANSWERS.as_markup(resize_keyboard=True)

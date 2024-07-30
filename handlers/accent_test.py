@@ -22,7 +22,7 @@ async def start_test(message: Message, state: FSMContext):
     await message.answer('Придумываю тест...\n'
                          'Напишите <b>Отмена</b>, чтобы вернуться к выбору теста')
     await message.answer(question,
-                         reply_markup=keyboards.KEYBOARD_ANSWERS.as_markup(resize_keyboard=True))
+                         reply_markup=keyboards.KEYBOARD_ANSWERS)
 
 
 @router.message(accent_test.test_in_progress, F.text.isdigit())
@@ -41,4 +41,4 @@ async def process_answer(message: Message):
 async def cancel_test(message: Message, state: FSMContext):
     await state.clear()
     await message.answer('Возврат к выбору теста...',
-                         reply_markup=keyboards.KEYBOARD_CHOOSING_TEST.as_markup(resize_keyboard=True))
+                         reply_markup=keyboards.KEYBOARD_CHOOSING_TEST)

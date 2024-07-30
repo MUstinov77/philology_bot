@@ -17,7 +17,7 @@ async def cmd_start(message: Message):
     )
     keyboard = keyboards.KEYBOARD_START
     await message.answer(**content.as_kwargs(),
-                         reply_markup=keyboard.as_markup(resize_keyboard=True))
+                         reply_markup=keyboard)
 
 
 @router.message(F.text.lower() == 'помощь')
@@ -25,11 +25,11 @@ async def cmd_start(message: Message):
 async def cmd_help(message: Message):
     await message.answer('Этот бот умеет проводить тестирование на '
                          'знание правил русского языка.\n'
-                         'Чтобы начать тестирование, выберите команду <b>Начать тест</b>  внизу экрана'
+                         'Чтобы начать тестирование, выберите команду <b>Начать тест</b> внизу экрана'
                          ' или введите её самостоятельно.\n'
                          'Если Вы правильно ответите, то бот выведет соответсвующую команду.\n'
                          'В противном случае он выведет верный ответ.\n\n'
                          ''
-                         'Так же в меню в левом нижнем углу экрана\n'
+                         'Также в меню в левом нижнем углу экрана\n'
                          'есть список всех команд для упраления ботом'
                          )
