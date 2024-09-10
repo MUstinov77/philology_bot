@@ -28,7 +28,6 @@ KEYBOARD_CHOOSING_TEST = ReplyKeyboardBuilder(
 KEYBOARD_ANSWERS = ReplyKeyboardBuilder(
     [
         [KEY_ANSWER_1, KEY_ANSWER_2],
-        [KEY_ANSWER_3, KEY_ANSWER_4],
     ]
 )
 
