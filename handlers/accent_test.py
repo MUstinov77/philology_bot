@@ -2,7 +2,7 @@ from aiogram.types import Message
 from keyboards import keyboards
 from aiogram import Router, F
 from aiogram.filters import StateFilter, Command
-from tests.questions import
+
 from aiogram.fsm.context import FSMContext
 from random import randint
 from classes.state_classes import Test
@@ -23,7 +23,7 @@ async def start_test(message: Message, state: FSMContext):
                          'Выберите вариант, в котором правильно поставлено ударение\n'
                          'Учитывайте контекст, в круглых скобках\n'
                          'Напишите <b>Отмена</b>, чтобы вернуться к выбору теста')
-    await message.answer(question,
+    await message.answer(
                          reply_markup=keyboards.KEYBOARD_ANSWERS)
 
 
