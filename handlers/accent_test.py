@@ -15,7 +15,7 @@ accent_test = Test()
 
 
 @router.message(StateFilter(None), Command('accent_test'))
-@router.message(StateFilter(None), F.text.lower() == 'неправильное ударение')
+@router.message(StateFilter(None), F.text.lower() == 'правильное ударение')
 async def start_test(message: Message, state: FSMContext):
 
     await state.set_state(accent_test.test_in_progress)
