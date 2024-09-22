@@ -73,7 +73,6 @@ async def process_answer(message: Message):
 
 @router.message(accent_test.test_in_progress, F.text.lower() == 'отмена')
 async def cancel_test(message: Message, state: FSMContext):
-    con.close()
     await state.clear()
     await message.answer('Возврат к выбору теста...',
                          reply_markup=keyboards.KEYBOARD_CHOOSING_TEST)
