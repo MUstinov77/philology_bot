@@ -6,7 +6,7 @@ KEY_TEST = types.KeyboardButton(text='Начать тест')
 KEY_HELP = types.KeyboardButton(text='Помощь')
 KEY_STOP = types.KeyboardButton(text='Отмена')
 KEY_RETRY = types.KeyboardButton(text='/retry')
-KEY_ACCENT_TEST = types.KeyboardButton(text='Неправильное ударение')
+KEY_ACCENT_TEST = types.KeyboardButton(text='Правильное ударение')
 KEY_SHORT_TEST = types.KeyboardButton(text='/short_test')
 
 KEY_ANSWER_1 = types.KeyboardButton(text='1')
@@ -28,7 +28,6 @@ KEYBOARD_CHOOSING_TEST = ReplyKeyboardBuilder(
 KEYBOARD_ANSWERS = ReplyKeyboardBuilder(
     [
         [KEY_ANSWER_1, KEY_ANSWER_2],
-        [KEY_ANSWER_3, KEY_ANSWER_4],
     ]
 )
 
