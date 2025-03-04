@@ -1,12 +1,14 @@
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram import Bot, Dispatcher
+from aiogram.fsm.strategy import FSMStrategy
 
 import asyncio
 
 from handlers import start_messages, test_messages, accent_test
 from config import config
 from aiogram.fsm.storage.memory import MemoryStorage
+
 
 
 routers = (
@@ -23,7 +25,10 @@ async def main():
               )
               )
 
-    dp = Dispatcher(storage=MemoryStorage())
+    dp = Dispatcher(
+        storage=MemoryStorage(),
+        fsm_strategy=FSMStrategy.USER_IN_CHAT
+    )
     dp.include_routers(*routers)
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)

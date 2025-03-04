@@ -1,5 +1,6 @@
 from aiogram import Router, F
 from aiogram.filters import Command
+from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 from aiogram.utils.formatting import Text, Bold
 from keyboards import keyboards
@@ -9,7 +10,9 @@ router = Router()
 
 @router.message(F.text.lower() == 'старт')
 @router.message(Command('start'))
-async def cmd_start(message: Message):
+async def cmd_start(message: Message, state: FSMContext):
+    if state:
+        await state.clear()
     content = Text(
         'Hello, ',
         Bold(message.from_user.full_name),
