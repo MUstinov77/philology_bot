@@ -5,16 +5,23 @@ from aiogram.fsm.strategy import FSMStrategy
 
 import asyncio
 
-from handlers import start_messages, test_messages, accent_test
+from handlers import (
+    start_messages,
+    test_messages,
+    accent_test,
+    admin_panel,
+)
 from config import config
 from aiogram.fsm.storage.memory import MemoryStorage
+from db import db
 
 
 
 routers = (
     start_messages.router,
     test_messages.router,
-    accent_test.router
+    accent_test.router,
+    admin_panel.router
 )
 
 
@@ -31,6 +38,7 @@ async def main():
     )
     dp.include_routers(*routers)
     await bot.delete_webhook(drop_pending_updates=True)
+    await db.initialize_db()
     await dp.start_polling(bot)
 
 

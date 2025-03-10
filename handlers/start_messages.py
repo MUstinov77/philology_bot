@@ -4,15 +4,25 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 from aiogram.utils.formatting import Text, Bold
 from keyboards import keyboards
+from db import db
 
 router = Router()
 
 
-@router.message(F.text.lower() == 'старт')
+
+
 @router.message(Command('start'))
 async def cmd_start(message: Message, state: FSMContext):
     if state:
         await state.clear()
+    telegram_id = message.from_user.id
+    user_data = await db.get_user(telegram_id)
+    if not user_data:
+        await db.add_user(
+            telegram_id=telegram_id,
+            username=message.from_user.username,
+            first_name=message.from_user.first_name
+        )
     content = Text(
         'Hello, ',
         Bold(message.from_user.full_name),
