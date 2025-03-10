@@ -13,7 +13,7 @@ router = Router()
 
 
 
-
+@router.message(StateFilter(None), F.text.lower() == 'правильное ударение')
 @router.message(StateFilter(None), Command('accent_test'))
 async def start_test(message: Message, state: FSMContext):
     await state.set_state(Test.test_in_progress)
