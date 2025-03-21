@@ -12,6 +12,7 @@ async def initialize_db():
         """)
         await db.commit()
 
+
 async def add_user(
         telegram_id: int,
         username: str,
@@ -25,6 +26,7 @@ async def add_user(
         """, (telegram_id, username, first_name)
         )
         await db.commit()
+
 
 async def get_all_users():
     async with aiosqlite.connect('db.sqlite') as db:
@@ -44,7 +46,12 @@ async def get_all_users():
 
 async def get_user(telegram_id: int):
     async with aiosqlite.connect('db.sqlite') as db:
-        cursor = await db.execute('SELECT * FROM users WHERE telegram_id = ?', (telegram_id,))
+        cursor = await db.execute(
+            'SELECT * '
+            'FROM users '
+            'WHERE telegram_id = ?',
+            (telegram_id,)
+        )
         row = await cursor.fetchone()
         if row:
             user = {

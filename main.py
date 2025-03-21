@@ -1,21 +1,14 @@
-from aiogram.client.default import DefaultBotProperties
-from aiogram.enums import ParseMode
-from aiogram import Bot, Dispatcher
-from aiogram.fsm.strategy import FSMStrategy
-
 import asyncio
 
-from handlers import (
-    start_messages,
-    test_messages,
-    accent_test,
-    admin_panel,
-)
-from config import config
+from aiogram import Bot, Dispatcher
+from aiogram.client.default import DefaultBotProperties
+from aiogram.enums import ParseMode
 from aiogram.fsm.storage.memory import MemoryStorage
+from aiogram.fsm.strategy import FSMStrategy
+
+from config import config
 from db import db
-
-
+from handlers import accent_test, admin_panel, start_messages, test_messages
 
 routers = (
     start_messages.router,

@@ -1,16 +1,13 @@
-from aiogram.types import Message
-from keyboards import keyboards
-from aiogram import Router, F
-from aiogram.filters import StateFilter, Command
-
+from aiogram import F, Router
+from aiogram.filters import Command, StateFilter
 from aiogram.fsm.context import FSMContext
+from aiogram.types import Message
 
-from db import db
 from classes.state_classes import Test
-
+from db import db
+from keyboards import keyboards
 
 router = Router()
-
 
 
 @router.message(StateFilter(None), F.text.lower() == 'правильное ударение')
@@ -38,6 +35,7 @@ async def start_test(message: Message, state: FSMContext):
         question,
         reply_markup=keyboards.KEYBOARD_ANSWERS
     )
+
 
 @router.message(Test.test_in_progress, F.text.isdigit())
 async def proceed_answer(message: Message, state: FSMContext):

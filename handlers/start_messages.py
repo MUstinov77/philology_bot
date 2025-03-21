@@ -1,14 +1,13 @@
-from aiogram import Router, F
+from aiogram import F, Router
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
-from aiogram.utils.formatting import Text, Bold
-from keyboards import keyboards
+from aiogram.utils.formatting import Bold, Text
+
 from db import db
+from keyboards import keyboards
 
 router = Router()
-
-
 
 
 @router.message(Command('start'))
@@ -38,9 +37,11 @@ async def cmd_start(message: Message, state: FSMContext):
 async def cmd_help(message: Message):
     await message.answer('Этот бот умеет проводить тестирование на '
                          'знание правил русского языка.\n'
-                         'Чтобы начать тестирование, выберите команду <b>Начать тест</b> внизу экрана'
+                         'Чтобы начать тестирование, выберите команду '
+                         '<b>Начать тест</b> внизу экрана'
                          ' или введите её самостоятельно.\n'
-                         'Если Вы правильно ответите, то бот выведет соответсвующую команду.\n'
+                         'Если Вы правильно ответите, то бот '
+                         'выведет соответсвующую команду.\n'
                          'В противном случае он выведет верный ответ.\n\n'
                          ''
                          'Также в меню в левом нижнем углу экрана\n'

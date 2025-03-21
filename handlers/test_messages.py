@@ -1,8 +1,8 @@
-from aiogram.types import Message
-from keyboards import keyboards
-from aiogram import Router, F
+from aiogram import F, Router
 from aiogram.filters import StateFilter
+from aiogram.types import Message
 
+from keyboards import keyboards
 
 router = Router()
 
@@ -10,7 +10,7 @@ router = Router()
 @router.message(StateFilter(None), F.text.lower() == 'начать тест')
 async def chose_test(message: Message):
     await message.answer('Выберите тест:\n'
-                         '/accent_test - тест на постановку ударения в словах\n',
+                         '/accent_test - тест на постановку ударения в словах',
                          reply_markup=keyboards.KEYBOARD_CHOOSING_TEST)
 
 
@@ -18,5 +18,3 @@ async def chose_test(message: Message):
 async def proceed_answer(message: Message):
     await message.answer('Вы прервали выбор теста',
                          reply_markup=keyboards.KEYBOARD_START)
-
-

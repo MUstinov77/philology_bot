@@ -17,11 +17,6 @@ def make_test(
             row = row.replace('\n', '')
             splited_row = row.split(sep=', ')
             question, answer = splited_row[0], splited_row[1]
-            cur.execute(f'''
-                ''')
-
-
-
 
 def check_file(file):
     with open(file, 'r+', encoding='utf-8') as f:
@@ -43,4 +38,3 @@ def check_file(file):
                 raise ValueError(
                     f'В строке {row} не поставлено ударение'
                 )
-check_file('test.txt')
