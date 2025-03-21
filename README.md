@@ -18,3 +18,18 @@
   ADMIN_ID=<Ваш id Telegram(узнать можно тут --> @userinfobot)>
   DEVELOPER_ID=(опционально, если Вы выступаете в проекте в роли разработчика
   ```
+  4. Создайте и активируйте виртуальное окружение
+  ```bash
+  python -m venv venv
+  source venv/bin/activate
+  ```
+  5. Установите зависимости 
+  ```bash
+  pip install -r requirements.txt
+  ```
+  6. Запустите бота
+  ```bash
+  python main.py
+  ```
+
+## Пример [@бота](https://t.me/NWWCPLBot)
