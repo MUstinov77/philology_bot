@@ -7,7 +7,7 @@ from classes.state_classes import Admin
 from config import config
 from db import db, tests_query
 from keyboards import keyboards
-from utils.messages import func_by_message_type
+
 
 router = Router()
 
@@ -15,8 +15,8 @@ ADMIN_ID = int(config.admin_id.get_secret_value())
 DEV_ID = int(config.developer_id.get_secret_value())
 
 FORBIDDEN_IDS = {
-    'admin_id': ADMIN_ID,
-    'developer_id': DEV_ID
+    'admin_id': 0,
+    'developer_id': 0
 }
 
 
@@ -57,11 +57,7 @@ async def admin_massage_mail(message: Message, state: FSMContext, bot: Bot):
     for user in users:
         user_id = user['telegram_id']
         if user_id not in FORBIDDEN_IDS.values():
-            await func_by_message_type(
-                message=message,
-                chat_id=user_id,
-                bot=bot,
-            )
+            await message.send_copy(chat_id=user_id)
     await state.set_state(Admin.choosing_command)
     await message.answer(
         text='Cообщения отправлены\n'
@@ -80,9 +76,28 @@ async def cancel_command(callback: CallbackQuery,  state: FSMContext):
         reply_markup=keyboards.KEYBOARD_START
     )
 
-@router.message(Admin.choosing_command, F.data == 'admin_tests')
+@router.callback_query(Admin.choosing_command, F.data == 'admin_tests')
 async def tests_command(callback: CallbackQuery, state: FSMContext):
-    await state.clear()
+    await callback.answer()
+    await state.set_state(Admin.tests_command)
+    message = f'<b>Тесты</b>:\n'
+    tests = await tests_query.get_all_tests()
+
+    for test in tests:
+        message += f'{test["test_id"]} - {test["test_name"]}\n'
+
     await callback.message.answer(
-        'Тесты'
+        message
+    )
+
+@router.callback_query(Admin.choosing_command, F.data == 'admin_users')
+async def check_users(callback: CallbackQuery, state: FSMContext):
+    await callback.answer()
+    users_data = await db.get_all_users()
+    message = f'В базе данных {len(users_data)} объекта.\n'
+    for user in users_data:
+        message += f'@{user['username']} - {user['first_name']}\n'
+
+    await callback.message.answer(
+        text=message
     )

@@ -16,12 +16,6 @@ async def start_test(message: Message, state: FSMContext):
     await state.set_state(Test.test_in_progress)
     telegram_id = message.from_user.id
     user_data = await db.get_user(telegram_id)
-    if not user_data:
-        await db.add_user(
-            telegram_id=telegram_id,
-            username=message.from_user.username,
-            first_name=message.from_user.first_name
-        )
     question, right_answer = await db.get_question(test_type_id=1)
     await state.update_data(
         question=question,

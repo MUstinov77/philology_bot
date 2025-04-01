@@ -7,5 +7,11 @@ async def get_all_tests():
             SELECT *
             FROM test_type
         """)
-        result = await cursor.fetchall()
-        return result
+        rows = await cursor.fetchall()
+        tests = [
+            {
+                'test_id': row[0],
+                'test_name': row[1],
+            } for row in rows
+        ]
+        return tests

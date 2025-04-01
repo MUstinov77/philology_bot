@@ -21,6 +21,9 @@ KEY_ADMIN_BACK = types.InlineKeyboardButton(
 KEY_ADMIN_TEST = types.InlineKeyboardButton(
     text='📝Тесты', callback_data='admin_tests'
 )
+KEY_ADMIN_USERS = types.InlineKeyboardButton(
+    text='👥Пользователи', callback_data='admin_users'
+)
 KEY_CANCEL = types.KeyboardButton(
     text='❌ Отмена'
 )
@@ -45,10 +48,10 @@ KEYBOARD_ANSWERS = ReplyKeyboardBuilder(
 ADMIN_CHOOSE_KEYBOARD = InlineKeyboardBuilder(
     [
         [
-            KEY_ADMIN_MAIL, KEY_ADMIN_BACK
+            KEY_ADMIN_MAIL, KEY_ADMIN_USERS
         ],
         [
-            KEY_ADMIN_TEST
+            KEY_ADMIN_TEST, KEY_ADMIN_BACK
         ]
     ]
 )
