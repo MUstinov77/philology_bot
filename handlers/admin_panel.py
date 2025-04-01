@@ -5,7 +5,7 @@ from aiogram.types import CallbackQuery, Message
 
 from classes.state_classes import Admin
 from config import config
-from db import db
+from db import db, tests_query
 from keyboards import keyboards
 from utils.messages import func_by_message_type
 
@@ -78,4 +78,11 @@ async def cancel_command(callback: CallbackQuery,  state: FSMContext):
     await callback.message.answer(
         'Вы вышли из панели администратора',
         reply_markup=keyboards.KEYBOARD_START
+    )
+
+@router.message(Admin.choosing_command, F.data == 'admin_tests')
+async def tests_command(callback: CallbackQuery, state: FSMContext):
+    await state.clear()
+    await callback.message.answer(
+        'Тесты'
     )

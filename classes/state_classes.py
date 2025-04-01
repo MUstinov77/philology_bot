@@ -8,3 +8,4 @@ class Test(StatesGroup):
 class Admin(StatesGroup):
     choosing_command = State()
     admin_mail = State()
+    tests_command = State()

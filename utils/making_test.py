@@ -1,4 +1,4 @@
-import sqlite3
+import aiosqlite
 
 
 def make_test(
@@ -9,7 +9,7 @@ def make_test(
     except Exception as e:
         result = f'Во время проверки файла возникла ошибка {e}'
     with open(file, 'r+', encoding='utf-8') as incoming_file:
-        con = sqlite3.connect('db.sqlite')
+        con = aiosqlite.connect('db.sqlite')
         cur = con.cursor()
         for row in incoming_file:
             if not row:
@@ -25,9 +25,9 @@ def check_file(file):
             if not row:
                 continue
             row = row.replace('\n', '')
-            splited_row = row.split(sep=', ')
-            question, answer = splited_row[0], splited_row[1]
-            if len(splited_row) != 2:
+            splitted_row = row.split(sep=', ')
+            question, answer = splitted_row[0], splitted_row[1]
+            if len(splitted_row) != 2:
                 raise ValueError(f'Неправильное количество данных в строке {row}')
             elif question.isdigit() or not answer.isdigit():
                 raise ValueError(f'Неправильное значение в строке {row}')
