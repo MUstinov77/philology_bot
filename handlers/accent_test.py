@@ -14,8 +14,6 @@ router = Router()
 @router.message(StateFilter(None), Command('accent_test'))
 async def start_test(message: Message, state: FSMContext):
     await state.set_state(Test.test_in_progress)
-    telegram_id = message.from_user.id
-    user_data = await db.get_user(telegram_id)
     question, right_answer = await db.get_question(test_type_id=1)
     await state.update_data(
         question=question,
