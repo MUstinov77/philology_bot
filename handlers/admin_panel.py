@@ -57,7 +57,10 @@ async def admin_massage_mail(message: Message, state: FSMContext, bot: Bot):
     for user in users:
         user_id = user['telegram_id']
         if user_id not in FORBIDDEN_IDS.values():
-            await message.send_copy(chat_id=user_id)
+            try:
+                await message.send_copy(chat_id=user_id)
+            except Exception:
+                pass
     await state.set_state(Admin.choosing_command)
     await message.answer(
         text='Cообщения отправлены\n'
