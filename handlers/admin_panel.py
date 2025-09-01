@@ -14,11 +14,6 @@ router = Router()
 ADMIN_ID = int(config.admin_id.get_secret_value())
 DEV_ID = int(config.developer_id.get_secret_value())
 
-FORBIDDEN_IDS = {
-    'admin_id': 0,
-    'developer_id': 0
-}
-
 
 @router.message(
     F.text == '❌ Отмена',
@@ -27,7 +22,8 @@ FORBIDDEN_IDS = {
 )
 @router.message(
     Command('admin'),
-    (F.from_user.id == ADMIN_ID) | (F.from_user.id == DEV_ID)
+    (F.from_user.id == ADMIN_ID) | (F.from_user.id == DEV_ID),
+    StateFilter(None)
 )
 async def admin_start(message: Message, state: FSMContext):
     await state.set_state(Admin.choosing_command)
@@ -56,11 +52,10 @@ async def admin_massage_mail(message: Message, state: FSMContext, bot: Bot):
     users = await db.get_all_users()
     for user in users:
         user_id = user['telegram_id']
-        if user_id not in FORBIDDEN_IDS.values():
-            try:
-                await message.send_copy(chat_id=user_id)
-            except Exception:
-                pass
+        try:
+            await message.send_copy(chat_id=user_id)
+        except Exception:
+            pass
     await state.set_state(Admin.choosing_command)
     await message.answer(
         text='Cообщения отправлены\n'
@@ -73,6 +68,7 @@ async def admin_massage_mail(message: Message, state: FSMContext, bot: Bot):
 
 @router.callback_query(StateFilter(Admin), F.data == 'admin_back')
 async def cancel_command(callback: CallbackQuery,  state: FSMContext):
+    await callback.answer()
     await state.clear()
     await callback.message.answer(
         'Вы вышли из панели администратора',
