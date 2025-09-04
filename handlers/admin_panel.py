@@ -5,7 +5,7 @@ from aiogram.types import CallbackQuery, Message
 
 from classes.state_classes import Admin
 from config import config
-from db import db, tests_query
+from db import admin
 from keyboards import keyboards
 
 
@@ -49,7 +49,7 @@ async def handle_massage_for_mail(callback: CallbackQuery, state: FSMContext):
 
 @router.message(Admin.admin_mail)
 async def admin_massage_mail(message: Message, state: FSMContext, bot: Bot):
-    users = await db.get_all_users()
+    users = admin.get_users()
     for user in users:
         user_id = user['telegram_id']
         try:
@@ -66,37 +66,37 @@ async def admin_massage_mail(message: Message, state: FSMContext, bot: Bot):
     )
 
 
-@router.callback_query(StateFilter(Admin), F.data == 'admin_back')
-async def cancel_command(callback: CallbackQuery,  state: FSMContext):
-    await callback.answer()
-    await state.clear()
-    await callback.message.answer(
-        'Вы вышли из панели администратора',
-        reply_markup=keyboards.KEYBOARD_START
-    )
-
-@router.callback_query(Admin.choosing_command, F.data == 'admin_tests')
-async def tests_command(callback: CallbackQuery, state: FSMContext):
-    await callback.answer()
-    await state.set_state(Admin.tests_command)
-    message = f'<b>Тесты</b>:\n'
-    tests = await tests_query.get_all_tests()
-
-    for test in tests:
-        message += f'{test["test_id"]} - {test["test_name"]}\n'
-
-    await callback.message.answer(
-        message
-    )
-
+# @router.callback_query(StateFilter(Admin), F.data == 'admin_back')
+# async def cancel_command(callback: CallbackQuery,  state: FSMContext):
+#     await callback.answer()
+#     await state.clear()
+#     await callback.message.answer(
+#         'Вы вышли из панели администратора',
+#         reply_markup=keyboards.KEYBOARD_START
+#     )
+#
+# @router.callback_query(Admin.choosing_command, F.data == 'admin_tests')
+# async def tests_command(callback: CallbackQuery, state: FSMContext):
+#     await callback.answer()
+#     await state.set_state(Admin.tests_command)
+#     message = f'<b>Тесты</b>:\n'
+#     tests = await tests_query.get_all_tests()
+#
+#     for test in tests:
+#         message += f'{test["test_id"]} - {test["test_name"]}\n'
+#
+#     await callback.message.answer(
+#         message
+#     )
+#
 @router.callback_query(Admin.choosing_command, F.data == 'admin_users')
 async def check_users(callback: CallbackQuery, state: FSMContext):
     await callback.answer()
-    users_data = await db.get_all_users()
-    message = f'В базе данных {len(users_data)} объекта.\n'
-    for user in users_data:
+    users = admin.get_users()
+    message = f'В базе данных {len(users)} объекта.\n'
+    for user in users:
         message += f'@{user['username']} - {user['first_name']}\n'
 
     await callback.message.answer(
         text=message
-    )
+   )

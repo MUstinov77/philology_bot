@@ -32,7 +32,7 @@ async def main():
     )
     dp.include_routers(*routers)
     await bot.delete_webhook(drop_pending_updates=True)
-    await db.initialize_db()
+    db.init_db()
     await dp.start_polling(bot)
 
 

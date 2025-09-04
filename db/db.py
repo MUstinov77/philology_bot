@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
+from .base import Base
 
 engine = create_engine(
     "sqlite:///db.sqlite3"
@@ -19,4 +20,4 @@ def session_provider(session: Session = create_session()):
     return session
 
 def init_db():
-    Base
+    Base.metadata.create_all(engine)
