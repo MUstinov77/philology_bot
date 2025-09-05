@@ -70,15 +70,15 @@ async def admin_massage_mail(message: Message, state: FSMContext):
     )
 
 
-# @router.callback_query(StateFilter(Admin), F.data == 'admin_back')
-# async def cancel_command(callback: CallbackQuery,  state: FSMContext):
-#     await callback.answer()
-#     await state.clear()
-#     await callback.message.answer(
-#         'Вы вышли из панели администратора',
-#         reply_markup=keyboards.KEYBOARD_START
-#     )
-#
+@router.callback_query(StateFilter(Admin), F.data == 'admin_back')
+async def cancel_command(callback: CallbackQuery,  state: FSMContext):
+    await callback.answer()
+    await state.clear()
+    await callback.message.answer(
+        'Вы вышли из панели администратора',
+        reply_markup=keyboards.KEYBOARD_START
+    )
+
 # @router.callback_query(Admin.choosing_command, F.data == 'admin_tests')
 # async def tests_command(callback: CallbackQuery, state: FSMContext):
 #     await callback.answer()
