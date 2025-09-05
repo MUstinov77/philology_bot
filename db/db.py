@@ -9,14 +9,15 @@ engine = create_engine(
 
 def create_session():
     with Session(engine) as session:
+        yield session
         try:
-            yield session
             session.commit()
         except Exception:
             session.rollback()
             raise
 
-def session_provider(session: Session = create_session()):
+def session_provider():
+    session = create_session()
     return session
 
 def init_db():

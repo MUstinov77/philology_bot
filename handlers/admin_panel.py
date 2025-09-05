@@ -92,10 +92,12 @@ async def admin_massage_mail(message: Message, state: FSMContext, bot: Bot):
 @router.callback_query(Admin.choosing_command, F.data == 'admin_users')
 async def check_users(callback: CallbackQuery, state: FSMContext):
     await callback.answer()
-    users = admin.get_users()
-    message = f'В базе данных {len(users)} объекта.\n'
-    for user in users:
-        message += f'@{user['username']} - {user['first_name']}\n'
+    users_sequence = admin.get_users()
+    message = f'Пользователей в базе: {len(users_sequence)}\n'
+    for user_row in users_sequence:
+        for user in user_row:
+            message += str(user)
+
 
     await callback.message.answer(
         text=message

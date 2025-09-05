@@ -14,7 +14,13 @@ class User(Base):
 
     status: Mapped[str] = mapped_column(default='common')
 
-    last_result: Mapped[str] = mapped_column()
+    last_result: Mapped[str] = mapped_column(nullable=True)
+
+    def __repr__(self):
+        return f"{self.username} {self.first_name} статус-{self.status}\n"
+
+    def __str__(self):
+        return  f"{self.username} {self.first_name} статус-{self.status}\n"
 
 class Test(Base):
     __tablename__ = "tests"

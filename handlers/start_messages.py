@@ -19,10 +19,10 @@ async def cmd_start(message: Message, state: FSMContext):
     if not user_data:
         user_data = {
             "telegram_id": telegram_id,
-            "username": message.from_user.username,
+            "username": f'@{message.from_user.username}',
             "first_name": message.from_user.first_name
         }
-        await users.add_user(
+        users.add_user(
             user_data
         )
     content = Text(
@@ -31,8 +31,10 @@ async def cmd_start(message: Message, state: FSMContext):
         '! Choose an action...'
     )
     keyboard = keyboards.KEYBOARD_START
-    await message.answer(**content.as_kwargs(),
-                         reply_markup=keyboard)
+    await message.answer(
+        **content.as_kwargs(),
+        reply_markup=keyboard
+    )
 
 
 @router.message(F.text.lower() == 'помощь')
