@@ -26,6 +26,8 @@ DEV_ID = int(config.developer_id.get_secret_value())
     StateFilter(None)
 )
 async def admin_start(message: Message, state: FSMContext):
+    if state:
+        await state.clear()
     await state.set_state(Admin.choosing_command)
     await message.answer(
         '<b>Выберите команду:</b>',
@@ -48,14 +50,16 @@ async def handle_massage_for_mail(callback: CallbackQuery, state: FSMContext):
 
 
 @router.message(Admin.admin_mail)
-async def admin_massage_mail(message: Message, state: FSMContext, bot: Bot):
-    users = admin.get_users()
-    for user in users:
-        user_id = user['telegram_id']
-        try:
-            await message.send_copy(chat_id=user_id)
-        except Exception:
-            pass
+async def admin_massage_mail(message: Message, state: FSMContext):
+    users_sequence = admin.get_users()
+    for user_row in users_sequence:
+        for user in user_row:
+            user_id = user.telegram_id
+
+            try:
+                await message.send_copy(chat_id=user_id)
+            except Exception:
+                pass
     await state.set_state(Admin.choosing_command)
     await message.answer(
         text='Cообщения отправлены\n'
@@ -102,3 +106,9 @@ async def check_users(callback: CallbackQuery, state: FSMContext):
     await callback.message.answer(
         text=message
    )
+    await callback.message.answer(
+        text='Выберите команду:',
+        reply_markup=keyboards.ADMIN_CHOOSE_KEYBOARD.as_markup(
+            resize_keyboard=True
+        )
+    )
