@@ -16,8 +16,8 @@ class User(Base):
 
     last_result: Mapped[str] = mapped_column(nullable=True)
 
-    def __repr__(self):
-        return f"{self.username} {self.first_name} статус-{self.status}\n"
+    # def __repr__(self):
+    #     return f"{self.username} {self.first_name} статус-{self.status}\n"
 
     def __str__(self):
         return  f"{self.username} {self.first_name} статус-{self.status}\n"
@@ -28,6 +28,11 @@ class Test(Base):
     id: Mapped[str] = mapped_column(primary_key=True, unique=True)
     test_name: Mapped[str] = mapped_column(unique=True)
     questions = relationship("Question", back_populates="test")
+    # TODO: add test command (/accent_test)
+    # test_command: Mapped[str] = mapped_column(unique=True)
+
+    def __str__(self):
+        return self.test_name
 
 class Question(Base):
     __tablename__ = "questions"

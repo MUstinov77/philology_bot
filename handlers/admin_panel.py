@@ -7,7 +7,7 @@ from classes.state_classes import Admin
 from config import config
 from db import admin
 from keyboards import keyboards
-
+from utils.utils import unpack_sequence
 
 router = Router()
 
@@ -52,14 +52,12 @@ async def handle_massage_for_mail(callback: CallbackQuery, state: FSMContext):
 @router.message(Admin.admin_mail)
 async def admin_massage_mail(message: Message, state: FSMContext):
     users_sequence = admin.get_users()
-    for user_row in users_sequence:
-        for user in user_row:
-            user_id = user.telegram_id
-
-            try:
-                await message.send_copy(chat_id=user_id)
-            except Exception:
-                pass
+    for user_id in unpack_sequence(users_sequence, "telegram_id"):
+        try:
+            await message.send_copy(chat_id=user_id)
+        except Exception as e:
+            # TODO: add logging
+            print(e)
     await state.set_state(Admin.choosing_command)
     await message.answer(
         text='Cообщения отправлены\n'
@@ -79,29 +77,26 @@ async def cancel_command(callback: CallbackQuery,  state: FSMContext):
         reply_markup=keyboards.KEYBOARD_START
     )
 
-# @router.callback_query(Admin.choosing_command, F.data == 'admin_tests')
-# async def tests_command(callback: CallbackQuery, state: FSMContext):
-#     await callback.answer()
-#     await state.set_state(Admin.tests_command)
-#     message = f'<b>Тесты</b>:\n'
-#     tests = await tests_query.get_all_tests()
-#
-#     for test in tests:
-#         message += f'{test["test_id"]} - {test["test_name"]}\n'
-#
-#     await callback.message.answer(
-#         message
-#     )
-#
+@router.callback_query(Admin.choosing_command, F.data == 'admin_tests')
+async def tests_command(callback: CallbackQuery, state: FSMContext):
+    await callback.answer()
+    await state.set_state(Admin.tests_command)
+    message = f'<b>Тесты</b>:\n'
+    test_sequence = admin.get_tests()
+    for test_row in test_sequence:
+        for test in test_row:
+            message += str(test)
+    await callback.message.answer(
+        message
+    )
+
 @router.callback_query(Admin.choosing_command, F.data == 'admin_users')
 async def check_users(callback: CallbackQuery, state: FSMContext):
     await callback.answer()
-    users_sequence = admin.get_users()
-    message = f'Пользователей в базе: {len(users_sequence)}\n'
-    for user_row in users_sequence:
-        for user in user_row:
-            message += str(user)
-
+    users = admin.get_users(tuples=True)
+    message = f'Пользователей в базе: {len(users)}\n'
+    for user in users:
+        message += str(user[0])
 
     await callback.message.answer(
         text=message
