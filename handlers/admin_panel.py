@@ -80,7 +80,6 @@ async def cancel_command(callback: CallbackQuery,  state: FSMContext):
 @router.callback_query(Admin.choosing_command, F.data == 'admin_tests')
 async def tests_command(callback: CallbackQuery, state: FSMContext):
     await callback.answer()
-    await state.set_state(Admin.tests_command)
     message = f'<b>Тесты</b>:\n'
     test_sequence = admin.get_tests()
     for test_row in test_sequence:
