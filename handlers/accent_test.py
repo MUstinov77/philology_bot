@@ -4,7 +4,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
 from classes.state_classes import Test
-from db import db
+from db import tests
 from keyboards import keyboards
 
 router = Router()
@@ -14,9 +14,10 @@ router = Router()
 @router.message(StateFilter(None), Command('accent_test'))
 async def start_test(message: Message, state: FSMContext):
     await state.set_state(Test.test_in_progress)
-    question, right_answer = await db.get_question(test_type_id=1)
+    question = tests.get_question_by_test(test_id=1)
+    text, right_answer = question.get_text_and_right_answer()
     await state.update_data(
-        question=question,
+        text=text,
         right_answer=right_answer
     )
     await message.answer(
@@ -24,7 +25,7 @@ async def start_test(message: Message, state: FSMContext):
         'Вызовите команду /stop, если хотите прервать тест'
     )
     await message.answer(
-        question,
+        text,
         reply_markup=keyboards.KEYBOARD_ANSWERS
     )
 
@@ -35,21 +36,22 @@ async def proceed_answer(message: Message, state: FSMContext):
     right_answer = user_data.get('right_answer')
     if message.text == right_answer:
         await message.answer(
-            'Верно!',
-            reply_markup=keyboards.KEYBOARD_ANSWERS
+            'Верно!'
         )
     else:
         await message.answer(
-            f'Неверно. Правильным должен быть {right_answer}',
-            reply_markup=keyboards.KEYBOARD_ANSWERS
+            f'Неверно. Правильным должен быть {right_answer}'
         )
-    question, right_answer = await db.get_question(test_type_id=1)
-    await state.update_data(question=question, right_answer=right_answer)
-    await message.answer(question, reply_markup=keyboards.KEYBOARD_ANSWERS)
+    question = tests.get_question_by_test(test_id=1)
+    text, right_answer = question.get_text_and_right_answer()
+    await state.update_data(text=text, right_answer=right_answer)
+    await message.answer(text, reply_markup=keyboards.KEYBOARD_ANSWERS)
 
 
 @router.message(Test.test_in_progress, Command('stop'))
 async def cancel_test(message: Message, state: FSMContext):
     await state.clear()
-    await message.answer('Возврат к выбору теста...',
-                         reply_markup=keyboards.KEYBOARD_CHOOSING_TEST)
+    await message.answer(
+        'Возврат к выбору теста...',
+        reply_markup=keyboards.KEYBOARD_CHOOSING_TEST
+    )

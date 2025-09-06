@@ -40,6 +40,10 @@ class Question(Base):
     id: Mapped[int] = mapped_column(primary_key=True, unique=True)
     text: Mapped[str] = mapped_column()
     right_answer: Mapped[str] = mapped_column()
+    # TODO: should I add number of answers?
 
     test_id: Mapped[int] = mapped_column(ForeignKey("tests.id"))
     test = relationship("Test", back_populates="questions")
+
+    def get_text_and_right_answer(self):
+        return self.text, self.right_answer
