@@ -9,6 +9,7 @@ router = Router()
 
 @router.message(StateFilter(None), F.text.lower() == 'начать тест')
 async def chose_test(message: Message):
+    # TODO: add fetching tests from db and refactor keybord for callbacks
     await message.answer('Выберите тест:\n'
                          '/accent_test - тест на постановку ударения в словах',
                          reply_markup=keyboards.KEYBOARD_CHOOSING_TEST)

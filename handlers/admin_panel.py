@@ -78,7 +78,7 @@ async def cancel_command(callback: CallbackQuery,  state: FSMContext):
     )
 
 @router.callback_query(Admin.choosing_command, F.data == 'admin_tests')
-async def tests_command(callback: CallbackQuery, state: FSMContext):
+async def tests_command(callback: CallbackQuery):
     await callback.answer()
     message = f'<b>Тесты</b>:\n'
     test_sequence = admin.get_tests()
@@ -90,7 +90,7 @@ async def tests_command(callback: CallbackQuery, state: FSMContext):
     )
 
 @router.callback_query(Admin.choosing_command, F.data == 'admin_users')
-async def check_users(callback: CallbackQuery, state: FSMContext):
+async def check_users(callback: CallbackQuery):
     await callback.answer()
     users = admin.get_users(tuples=True)
     message = f'Пользователей в базе: {len(users)}\n'
