@@ -4,7 +4,7 @@ from .db import session_provider
 from .models import User, Test
 
 
-def get_users(tuples: True | False = None):
+def get_users(tuples: bool | None = None):
     session = session_provider()
     query = select(User)
     result = session.execute(query)

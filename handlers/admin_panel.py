@@ -31,9 +31,9 @@ async def admin_start(message: Message, state: FSMContext):
     await state.set_state(Admin.choosing_command)
     await message.answer(
         '<b>Выберите команду:</b>',
-        reply_markup=keyboards.ADMIN_CHOOSE_KEYBOARD.as_markup(
-            resize_keyboard=True
-        )
+            reply_markup=keyboards.ADMIN_CHOOSE_KEYBOARD.as_markup(
+                resize_keyboard=True
+            )
     )
 
 
