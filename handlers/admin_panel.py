@@ -7,7 +7,7 @@ from classes.state_classes import Admin
 from config import config
 from db import admin
 from keyboards import keyboards
-from utils.utils import unpack_sequence
+
 
 router = Router()
 
@@ -51,8 +51,9 @@ async def handle_massage_for_mail(callback: CallbackQuery, state: FSMContext):
 
 @router.message(Admin.admin_mail)
 async def admin_massage_mail(message: Message, state: FSMContext):
-    users_sequence = admin.get_users()
-    for user_id in unpack_sequence(users_sequence, "telegram_id"):
+    users = admin.get_users()
+    for user in users:
+        user_id = user.telegram_id
         try:
             await message.send_copy(chat_id=user_id)
         except Exception as e:
