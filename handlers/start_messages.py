@@ -19,7 +19,7 @@ async def cmd_start(message: Message, state: FSMContext):
     if not user_data:
         user_data = {
             "telegram_id": telegram_id,
-            "username": f'@{message.from_user.username}',
+            "username": f"@{message.from_user.username}",
             "first_name": message.from_user.first_name
         }
         users.add_user(
