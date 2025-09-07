@@ -1,11 +1,11 @@
-from aiogram import Bot, F, Router
+from aiogram import F, Router
 from aiogram.filters import Command, StateFilter
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery, Message
 
 from classes.state_classes import Admin
 from config import config
-from db import db, tests_query
+from db import admin
 from keyboards import keyboards
 
 
@@ -26,12 +26,14 @@ DEV_ID = int(config.developer_id.get_secret_value())
     StateFilter(None)
 )
 async def admin_start(message: Message, state: FSMContext):
+    if state:
+        await state.clear()
     await state.set_state(Admin.choosing_command)
     await message.answer(
         '<b>Выберите команду:</b>',
-        reply_markup=keyboards.ADMIN_CHOOSE_KEYBOARD.as_markup(
-            resize_keyboard=True
-        )
+            reply_markup=keyboards.ADMIN_CHOOSE_KEYBOARD.as_markup(
+                resize_keyboard=True
+            )
     )
 
 
@@ -48,14 +50,15 @@ async def handle_massage_for_mail(callback: CallbackQuery, state: FSMContext):
 
 
 @router.message(Admin.admin_mail)
-async def admin_massage_mail(message: Message, state: FSMContext, bot: Bot):
-    users = await db.get_all_users()
+async def admin_massage_mail(message: Message, state: FSMContext):
+    users = admin.get_users()
     for user in users:
-        user_id = user['telegram_id']
+        user_id = user.telegram_id
         try:
             await message.send_copy(chat_id=user_id)
-        except Exception:
-            pass
+        except Exception as e:
+            # TODO: add logging
+            print(e)
     await state.set_state(Admin.choosing_command)
     await message.answer(
         text='Cообщения отправлены\n'
@@ -76,27 +79,36 @@ async def cancel_command(callback: CallbackQuery,  state: FSMContext):
     )
 
 @router.callback_query(Admin.choosing_command, F.data == 'admin_tests')
-async def tests_command(callback: CallbackQuery, state: FSMContext):
+async def tests_command(callback: CallbackQuery):
     await callback.answer()
-    await state.set_state(Admin.tests_command)
-    message = f'<b>Тесты</b>:\n'
-    tests = await tests_query.get_all_tests()
-
+    message = f'<b>Тесты доступные пользователям:</b>:\n'
+    tests= admin.get_tests()
     for test in tests:
-        message += f'{test["test_id"]} - {test["test_name"]}\n'
-
+        message += f"{test.test_name}\n"
     await callback.message.answer(
         message
     )
+    await callback.message.answer(
+        text='Выберите команду:',
+        reply_markup=keyboards.ADMIN_CHOOSE_KEYBOARD.as_markup(
+            resize_keyboard=True
+        )
+    )
 
 @router.callback_query(Admin.choosing_command, F.data == 'admin_users')
-async def check_users(callback: CallbackQuery, state: FSMContext):
+async def check_users(callback: CallbackQuery):
     await callback.answer()
-    users_data = await db.get_all_users()
-    message = f'В базе данных {len(users_data)} объекта.\n'
-    for user in users_data:
-        message += f'@{user['username']} - {user['first_name']}\n'
+    users = admin.get_users()
+    message = f'Пользователей в базе: {len(users)}\n'
+    for user in users:
+        message += str(user)
 
     await callback.message.answer(
         text=message
+   )
+    await callback.message.answer(
+        text='Выберите команду:',
+        reply_markup=keyboards.ADMIN_CHOOSE_KEYBOARD.as_markup(
+            resize_keyboard=True
+        )
     )

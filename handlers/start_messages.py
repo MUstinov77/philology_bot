@@ -4,7 +4,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 from aiogram.utils.formatting import Bold, Text
 
-from db import db
+from db import users
 from keyboards import keyboards
 
 router = Router()
@@ -15,12 +15,15 @@ async def cmd_start(message: Message, state: FSMContext):
     if state:
         await state.clear()
     telegram_id = message.from_user.id
-    user_data = await db.get_user(telegram_id)
+    user_data = users.get_user(telegram_id=telegram_id)
     if not user_data:
-        await db.add_user(
-            telegram_id=telegram_id,
-            username=message.from_user.username,
-            first_name=message.from_user.first_name
+        user_data = {
+            "telegram_id": telegram_id,
+            "username": f"@{message.from_user.username}",
+            "first_name": message.from_user.first_name
+        }
+        users.add_user(
+            user_data
         )
     content = Text(
         'Hello, ',
@@ -28,8 +31,10 @@ async def cmd_start(message: Message, state: FSMContext):
         '! Choose an action...'
     )
     keyboard = keyboards.KEYBOARD_START
-    await message.answer(**content.as_kwargs(),
-                         reply_markup=keyboard)
+    await message.answer(
+        **content.as_kwargs(),
+        reply_markup=keyboard
+    )
 
 
 @router.message(F.text.lower() == 'помощь')
