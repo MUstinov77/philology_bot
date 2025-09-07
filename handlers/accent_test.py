@@ -15,7 +15,7 @@ router = Router()
 async def start_test(message: Message, state: FSMContext):
     await state.set_state(Test.test_in_progress)
     question = tests.get_question_by_test(test_id=1)
-    text, right_answer = question.get_text_and_right_answer()
+    text, right_answer = question.text, question.right_answer
     await state.update_data(
         text=text,
         right_answer=right_answer
@@ -34,17 +34,13 @@ async def start_test(message: Message, state: FSMContext):
 async def proceed_answer(message: Message, state: FSMContext):
     user_data = await state.get_data()
     right_answer = user_data.get('right_answer')
-    if message.text == right_answer:
-        await message.answer(
-            'Верно!'
-        )
-    else:
-        await message.answer(
-            f'Неверно. Правильным должен быть {right_answer}'
-        )
+    await message.answer("Right!") if message.text == right_answer else await message.answer(f"wrong! Right answer is {right_answer}")
     question = tests.get_question_by_test(test_id=1)
-    text, right_answer = question.get_text_and_right_answer()
-    await state.update_data(text=text, right_answer=right_answer)
+    text, right_answer = question.text, question.right_answer
+    await state.update_data(
+        text=text,
+        right_answer=right_answer
+    )
     await message.answer(text, reply_markup=keyboards.KEYBOARD_ANSWERS)
 
 

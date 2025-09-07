@@ -44,6 +44,3 @@ class Question(Base):
 
     test_id: Mapped[int] = mapped_column(ForeignKey("tests.id"))
     test = relationship("Test", back_populates="questions")
-
-    def get_text_and_right_answer(self):
-        return self.text, self.right_answer
