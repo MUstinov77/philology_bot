@@ -33,6 +33,12 @@ async def main():
     dp.include_routers(*routers)
     await bot.delete_webhook(drop_pending_updates=True)
     db.init_db()
+    # TODO: rework keyboards to dynamic compute
+
+    # TODO: rework test handler to dynamic compute
+
+    # TODO: add ability to add test by the admin
+
     await dp.start_polling(bot)
 
 
