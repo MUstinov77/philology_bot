@@ -64,3 +64,12 @@ KEYBOARD_CANCEL = ReplyKeyboardBuilder(
 KEYBOARD_START = KEYBOARD_START.as_markup(resize_keyboard=True)
 KEYBOARD_CHOOSING_TEST = KEYBOARD_CHOOSING_TEST.as_markup(resize_keyboard=True)
 KEYBOARD_ANSWERS = KEYBOARD_ANSWERS.as_markup(resize_keyboard=True)
+
+def dynamic_keyboard_builder(
+        number_of_variants: int
+):
+    return ReplyKeyboardBuilder(
+        [
+            [types.KeyboardButton(text=str(i)) for i in range(1, number_of_variants + 1)]
+        ]
+    )
