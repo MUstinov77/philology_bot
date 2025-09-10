@@ -1,3 +1,5 @@
+from html import escape
+
 from aiogram import F, Router
 from aiogram.filters import Command, StateFilter
 from aiogram.fsm.context import FSMContext
@@ -101,7 +103,7 @@ async def check_users(callback: CallbackQuery):
     users = admin.get_users()
     message = f'Пользователей в базе: {len(users)}\n'
     for user in users:
-        message += str(user)
+        message += escape(str(user))
 
     await callback.message.answer(
         text=message
