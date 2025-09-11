@@ -14,21 +14,21 @@ jobs:
       steps:
         - run: |
             echo The PR was merged
-#        - name: Checkout repo
-#          uses: actions/checkout@v3
-#        - name: Execute pull comand
-#          uses: appleboy/ssh-action@master
-#          with:
-#            host: ${{secrets.HOST}}
-#            username: ${{secrets.USERNAME}}
-#            password: ${{secrets.PASSWORD}}
-#            script: |
-##              cd philology_bot
-##              git pull origin main
-##              sudo systemctl reload bot
-#        - name: Send message to telegram
-#          uses: appleboy/telegram-action@master
-#          with:
-#            to: ${{ secrets.TELEGRAM_TO }}
-#            token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-#            message: Deploy philology_bot is completed
+        - name: Checkout repo
+          uses: actions/checkout@v3
+        - name: Execute pull comand
+          uses: appleboy/ssh-action@master
+          with:
+            host: ${{secrets.HOST}}
+            username: ${{secrets.USERNAME}}
+            password: ${{secrets.PASSWORD}}
+            script: |
+              cd philology_bot
+              git pull origin main
+              sudo systemctl reload bot
+        - name: Send message to telegram
+          uses: appleboy/telegram-action@master
+          with:
+            to: ${{ secrets.TELEGRAM_TO }}
+            token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+            message: Deploy philology_bot is completed
