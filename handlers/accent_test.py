@@ -34,7 +34,7 @@ async def start_test(message: Message, state: FSMContext):
 async def proceed_answer(message: Message, state: FSMContext):
     user_data = await state.get_data()
     right_answer = user_data.get('right_answer')
-    await message.answer("Right!") if message.text == right_answer else await message.answer(f"wrong! Right answer is {right_answer}")
+    await message.answer("Правильно!") if message.text == right_answer else await message.answer(f"Неправильно... Правильный ответ - {right_answer}")
     question = tests.get_question_by_test(test_id=1)
     text, right_answer = question.text, question.right_answer
     await state.update_data(
