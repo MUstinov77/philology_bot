@@ -2,34 +2,33 @@ name: Main philology_bot workflow
 
 on:
   pull_request:
-    branches: [main]
+    branches: main
     types:
       - closed
 
 jobs:
 
   deploy_to_prod:
-    if merged:
       if: github.event.pull_request.merged == true
       runs-on: ubuntu-latest
       steps:
-        - name: Checkout repo
-          uses: actions/checkout@v3
-        - name: Execute pull comand
-          uses: appleboy/ssh-action@master
-          with:
-            host: ${{secrets.HOST}}
-            username: ${{secrets.USERNAME}}
-            password: ${{secrets.PASSWORD}}
-            script: |
-              sudo systemctl stop bot
-              cd philology_bot
-              git pull origin main
-              sudo systemctl daemon-reload
-              sudo systemctl start bot
-        - name: Send message to telegram
-          uses: appleboy/telegram-action@master
-          with:
-            to: ${{ secrets.TELEGRAM_TO }}
-            token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-            message: Deploy philology_bot is completed
+        - run: |
+            echo The PR was merged
+#        - name: Checkout repo
+#          uses: actions/checkout@v3
+#        - name: Execute pull comand
+#          uses: appleboy/ssh-action@master
+#          with:
+#            host: ${{secrets.HOST}}
+#            username: ${{secrets.USERNAME}}
+#            password: ${{secrets.PASSWORD}}
+#            script: |
+##              cd philology_bot
+##              git pull origin main
+##              sudo systemctl reload bot
+#        - name: Send message to telegram
+#          uses: appleboy/telegram-action@master
+#          with:
+#            to: ${{ secrets.TELEGRAM_TO }}
+#            token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+#            message: Deploy philology_bot is completed

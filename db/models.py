@@ -20,7 +20,7 @@ class User(Base):
     #     return f"{self.username} {self.first_name} статус-{self.status}\n"
 
     def __str__(self):
-        return  f"{self.username} {self.first_name} статус-{self.status}\n"
+        return  f"@{self.username} {self.first_name} {self.status}\n"
 
 class Test(Base):
     __tablename__ = "tests"
