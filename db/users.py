@@ -10,6 +10,12 @@ def get_user(telegram_id: int = None):
     result = session.execute(query)
     return result.one_or_none()
 
+def get_users():
+    session = session_provider()
+    query = select(User)
+    result = session.execute(query)
+    return result.scalars().all()
+
 
 def add_user(user_data):
     session = session_provider()

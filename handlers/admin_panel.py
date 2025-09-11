@@ -7,7 +7,8 @@ from aiogram.types import CallbackQuery, Message
 
 from classes.state_classes import Admin
 from config import config
-from db import admin
+from db.tests import get_tests
+from db.users import get_users
 from keyboards import keyboards
 
 
@@ -53,7 +54,7 @@ async def handle_massage_for_mail(callback: CallbackQuery, state: FSMContext):
 
 @router.message(Admin.admin_mail)
 async def admin_massage_mail(message: Message, state: FSMContext):
-    users = admin.get_users()
+    users = get_users()
     for user in users:
         user_id = user.telegram_id
         try:
@@ -83,8 +84,8 @@ async def cancel_command(callback: CallbackQuery,  state: FSMContext):
 @router.callback_query(Admin.choosing_command, F.data == 'admin_tests')
 async def tests_command(callback: CallbackQuery):
     await callback.answer()
-    message = f'<b>Тесты доступные пользователям:</b>:\n'
-    tests= admin.get_tests()
+    message = f'<b>Тесты доступные пользователям:</b>\n'
+    tests = get_tests()
     for test in tests:
         message += f"{test.test_name}\n"
     await callback.message.answer(
@@ -100,7 +101,7 @@ async def tests_command(callback: CallbackQuery):
 @router.callback_query(Admin.choosing_command, F.data == 'admin_users')
 async def check_users(callback: CallbackQuery):
     await callback.answer()
-    users = admin.get_users()
+    users = get_users()
     message = f'Пользователей в базе: {len(users)}\n'
     for user in users:
         message += escape(str(user))
