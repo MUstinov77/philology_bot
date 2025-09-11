@@ -61,7 +61,6 @@ KEYBOARD_CANCEL = ReplyKeyboardBuilder(
     ]
 )
 
-KEYBOARD_START = KEYBOARD_START.as_markup(resize_keyboard=True)
 KEYBOARD_CHOOSING_TEST = KEYBOARD_CHOOSING_TEST.as_markup(resize_keyboard=True)
 KEYBOARD_ANSWERS = KEYBOARD_ANSWERS.as_markup(resize_keyboard=True)
 
