@@ -8,13 +8,13 @@ from aiogram.fsm.strategy import FSMStrategy
 
 from config import config
 from db import db
-from handlers import accent_test, admin_panel, start_messages, test_messages
+from handlers import admin_panel, start_messages, test_messages, test_handler
 
 routers = (
     start_messages.router,
     test_messages.router,
-    accent_test.router,
-    admin_panel.router
+    admin_panel.router,
+    test_handler.router
 )
 
 
@@ -33,10 +33,10 @@ async def main():
     dp.include_routers(*routers)
     await bot.delete_webhook(drop_pending_updates=True)
     db.init_db()
-    # TODO: rework keyboards to dynamic compute
 
-    # TODO: rework test handler to dynamic compute
+    # TODO: add db migrations
 
+    # TODO: add statistics and test result
     # TODO: add ability to add test by the admin
 
     await dp.start_polling(bot)

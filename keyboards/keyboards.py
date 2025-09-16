@@ -34,17 +34,6 @@ KEYBOARD_START = ReplyKeyboardBuilder(
     ]
 )
 
-KEYBOARD_CHOOSING_TEST = ReplyKeyboardBuilder(
-    [
-        [KEY_ACCENT_TEST,]
-    ]
-)
-KEYBOARD_ANSWERS = ReplyKeyboardBuilder(
-    [
-        [KEY_ANSWER_1, KEY_ANSWER_2],
-    ]
-)
-
 ADMIN_CHOOSE_KEYBOARD = InlineKeyboardBuilder(
     [
         [
@@ -61,8 +50,6 @@ KEYBOARD_CANCEL = ReplyKeyboardBuilder(
     ]
 )
 
-KEYBOARD_CHOOSING_TEST = KEYBOARD_CHOOSING_TEST.as_markup(resize_keyboard=True)
-KEYBOARD_ANSWERS = KEYBOARD_ANSWERS.as_markup(resize_keyboard=True)
 
 def dynamic_keyboard_builder(
         number_of_variants: int
@@ -70,5 +57,12 @@ def dynamic_keyboard_builder(
     return ReplyKeyboardBuilder(
         [
             [types.KeyboardButton(text=str(i)) for i in range(1, number_of_variants + 1)]
+        ]
+    )
+
+def inline_keyboard_builder(variants):
+    return InlineKeyboardBuilder(
+        [
+            [types.InlineKeyboardButton(text=variant.test_name, callback_data=variant.test_name) for variant in variants]
         ]
     )

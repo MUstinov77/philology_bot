@@ -5,7 +5,7 @@ from aiogram.filters import Command, StateFilter
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery, Message
 
-from classes.state_classes import Admin
+from classes.state_classes import Admin, Test
 from config import config
 from db.tests import get_tests
 from db.users import get_users
@@ -29,8 +29,6 @@ DEV_ID = int(config.developer_id.get_secret_value())
     StateFilter(None)
 )
 async def admin_start(message: Message, state: FSMContext):
-    if state:
-        await state.clear()
     await state.set_state(Admin.choosing_command)
     await message.answer(
         '<b>Выберите команду:</b>',

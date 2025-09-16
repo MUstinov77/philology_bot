@@ -5,7 +5,7 @@ from aiogram.types import Message
 from aiogram.utils.formatting import Bold, Text
 
 from db import users
-from keyboards import keyboards
+from keyboards.keyboards import KEYBOARD_START
 
 router = Router()
 
@@ -30,10 +30,9 @@ async def cmd_start(message: Message, state: FSMContext):
         Bold(message.from_user.full_name),
         '! Choose an action...'
     )
-    keyboard = keyboards.KEYBOARD_START
     await message.answer(
         **content.as_kwargs(),
-        reply_markup=keyboard
+        reply_markup=KEYBOARD_START.as_markup(resize_keyboard=True)
     )
 
 
