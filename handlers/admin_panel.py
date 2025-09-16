@@ -76,7 +76,7 @@ async def cancel_command(callback: CallbackQuery,  state: FSMContext):
     await state.clear()
     await callback.message.answer(
         'Вы вышли из панели администратора',
-        reply_markup=keyboards.KEYBOARD_START
+        reply_markup=keyboards.KEYBOARD_START.as_markup(resize_keyboard=True)
     )
 
 @router.callback_query(Admin.choosing_command, F.data == 'admin_tests')
